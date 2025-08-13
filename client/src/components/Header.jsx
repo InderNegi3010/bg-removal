@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { assets } from "../assets/assets";
+import { AppContext } from "../context/AppContext";
 
 const Header = () => {
+  
+  const {removeBg} = useContext(AppContext)
+
   return (
     <div className="flex flex-col-reverse sm:flex-row items-center justify-between gap-10 py-4 mt-10 sm:mt-20 px-6 lg:px-44">
       {/* ----------------Left Side ------------------ */}
@@ -19,7 +23,7 @@ const Header = () => {
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias,
           expedita.
         </p>
-        <input type="file" id="Upload1" hidden />
+        <input onChange={(e) => removeBg(e.target.files[0])} type="file" accept="image/*" id="Upload1" hidden />
         <label
           className="inline-flex gap-3 px-8 py-3.5 rounded-full cursor-pointer bg-gradient-to-r from-violet-600 to-fuchsia-500 hover:scale-105 transition-all duration-700"
           htmlFor="Upload1"
@@ -34,7 +38,7 @@ const Header = () => {
         <img
           src={assets.header_img}
           alt=""
-          className="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl"
+          className="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl hover:scale-110 hover:rotate-[10deg] transition-all duration-800"
         />
       </div>
     </div>

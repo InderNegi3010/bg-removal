@@ -49,7 +49,7 @@ const clerkWebhooks = async (req, res) => {
 
       case "user.deleted":
         {
-            await userModel.findOneAndDelete({ clerkId: data.id });
+          await userModel.findOneAndDelete({ clerkId: data.id });
           res.json({ success: true, message: "User Deleted Successfully" });
         }
 
@@ -61,4 +61,15 @@ const clerkWebhooks = async (req, res) => {
   }
 };
 
-export {clerkWebhooks}
+const userCredits = async (req, res) => {
+  try {
+    const clerkId = req.clerkId;
+    const userData = await userModel.findOne({ clerkId });
+
+    res.json({ success: true, credits: userData.creditBalance });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
+  }
+};
+
