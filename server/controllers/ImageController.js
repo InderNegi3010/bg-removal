@@ -5,14 +5,10 @@ import userModel from "../models/userModel.js";
 
 const removeBgImage = async (req, res) => {
   try {
-    const clerkId = req.clerkId; // ✅ from middleware
-
+    const clerkId = req.clerkId;
     const user = await userModel.findOne({ clerkId });
 
-    if (!user) {
-      return res.json({ success: false, message: "User Not found" });
-    }
-
+    if (!user) return res.json({ success: false, message: "User Not found" });
     if (user.creditBalance === 0) {
       return res.json({
         success: false,
@@ -21,12 +17,11 @@ const removeBgImage = async (req, res) => {
       });
     }
 
-    const imagePath = req.file.path;
-
-    // Read file and send to ClipDrop API
-    const imageFile = fs.createReadStream(imagePath);
     const formData = new FormData();
-    formData.append("image_file", imageFile);
+    formData.append("image_file", req.file.buffer, {
+      filename: req.file.originalname,
+      contentType: req.file.mimetype,
+    });
 
     const { data } = await axios.post(
       "https://clipdrop-api.co/remove-background/v1",
@@ -47,7 +42,6 @@ const removeBgImage = async (req, res) => {
       creditBalance: user.creditBalance - 1,
     });
 
-
     res.json({
       success: true,
       resultImage,
@@ -55,9 +49,8 @@ const removeBgImage = async (req, res) => {
       message: "Background has been removed",
     });
   } catch (error) {
-    console.log(error.message);
+    console.error(error);
     res.json({ success: false, message: error.message });
   }
 };
-
 export { removeBgImage };
