@@ -5,7 +5,7 @@ import connectDB from "./configs/mongodb.js";
 import { configDotenv } from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
-
+import fs from "fs";
 
 import userRouter from "./routes/userRoutes.js";
 import imageRoter from "./routes/imageRoutes.js";
@@ -18,6 +18,12 @@ connectDB();
 // For ES Modules, get __dirname equivalent
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Ensure uploads folder exists
+const uploadsPath = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadsPath)) {
+    fs.mkdirSync(uploadsPath);
+}
 
 // Middlewares
 app.use(express.json());
