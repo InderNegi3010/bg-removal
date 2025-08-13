@@ -5,7 +5,7 @@ import connectDB from "./configs/mongodb.js";
 import { configDotenv } from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
-import fs from "fs";
+
 
 import userRouter from "./routes/userRoutes.js";
 import imageRoter from "./routes/imageRoutes.js";
